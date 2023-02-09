@@ -1,0 +1,6 @@
+1 obter a distancia percorrida na viagem em quilometros.
+2 Obter o preço da gasolina por litros.
+3 Obter consumo:quantos quilometros por litro o carro gasta.
+4 Calcular quantos litros gasto:dividir a distancia percorrida pelo quilometragem por litro que carro faz.
+5 Calcular o custo total:multiplicar o consumo de litros pelo o preço da gasolina.  
+6 exibir a resultado do custo total
