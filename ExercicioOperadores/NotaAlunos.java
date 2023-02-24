@@ -7,7 +7,7 @@ public class NotaAlunos {
         Scanner sc = new Scanner(System.in);
         System.out.println("Digite a 1ª nota do aluno ");
         double nota1Aluno = sc.nextDouble();
-        Scanner sc = new Scanner(System.in);
+        Scanner sd = new Scanner(System.in);
         System.out.println("Digite a 2ª nota do aluno ");
         double nota2Aluno = sc.nextDouble();
 
