@@ -1,4 +1,4 @@
-package RevisaoFPOOB.Cadastro;
+package RevisaoFPOO.Cadastro;
 
 public abstract class Animal {
     //atributos

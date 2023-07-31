@@ -1,42 +1,38 @@
-package RevisaoFPOOB.Agenda;
+package RevisaoFPOO.Agenda;
 
 public class Agenda { // agendar consulta
     // atributos
-    int dia;
-    int mes;
-    int ano;
-    double hora;
-
-    //gets and sets
-    public int getDia() {
-        return dia;
+    String data;
+    String hora;
+    String dataHora;
+    String servico;
+    //métodos
+    public String getData() {
+        return data;
     }
-    public void setDia(int dia) {
-        this.dia = dia;
+    public void setData(String data) {
+        this.data = data;
     }
-    public int getMes() {
-        return mes;
-    }
-    public void setMes(int mes) {
-        this.mes = mes;
-    }
-    public int getAno() {
-        return ano;
-    }
-    public void setAno(int ano) {
-        this.ano = ano;
-    }
-    public double getHora() {
+    public String getHora() {
         return hora;
     }
-    public void setHora(double hora) {
+    public void setHora(String hora) {
         this.hora = hora;
+    }
+    public String getDataHora() {
+        dataHora = data+hora;
+        return dataHora;
+    }
+    public void setDataHora(String dataHora) {
+        this.dataHora = dataHora;
+    }
+    public String getServico() {
+        return servico;
+    }
+    public void setServico(String servico) {
+        this.servico = servico;
     }
 
 
-
-    // métodos
-
-    
     
 }
