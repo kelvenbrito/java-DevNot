@@ -17,8 +17,10 @@ public class App {
                 Gato gatos[] = new Gato[10];
                 Cachorro cachorros[] = new Cachorro[10];
                 OutrosAnimais outros[] = new OutrosAnimais[10];
+                Agenda agendas[] = new Agenda[100];// armazernar as consultas()
 
-                int contGatos = 0, contCachorros = 0, contOutros = 0, contData = 0;
+                int contGatos = 0, contCachorros = 0, contOutros = 0, contData = 0, contAgenda = 0;
+                ;
 
                 // criar a minha aplicação
                 JOptionPane.showMessageDialog(null, "Bem-Vindo ao Consultório\n do Dr. Frankstein");
@@ -94,46 +96,69 @@ public class App {
                                         JOptionPane.showMessageDialog(null, "Valor invalido!");
                                 }
                         } else if (acao1 == 2) {// agendar consulta
-                                int acao3 = Integer
-                                                .parseInt(JOptionPane.showInputDialog(
-                                                                "1-Marcar consulta\n 2- Desmacar Consulta\n  3-Sair"));
-                                if (acao3 == 1) {
-                                        Agenda consulta[] = new Agenda[10];
-                                        String nomeProp = JOptionPane.showInputDialog("Informe Nome do animal");
+                                // 1º verificação - cadastro do nome
+                                boolean cadastroOK = false;
+                                String nomeAgenda = JOptionPane.showInputDialog("Informe o Nome do PET");
+                                for (int i = 0; i < contGatos; i++) {// busca no vetor de gatos
+                                        if (gatos[i].getNome().equals(nomeAgenda)) {
+                                                // mensagem de confirmação
+                                                JOptionPane.showMessageDialog(null, "Pet Encontrado");
+                                                cadastroOK = true;
+                                                break;
+                                        }
+                                }
+                                for (int i = 0; i < contCachorros; i++) {// busca no vetor de gatos
+                                        if (cachorros[i].getNome().equals(nomeAgenda)) {
+                                                // mensagem de confirmação
+                                                JOptionPane.showMessageDialog(null, "Pet Encontrado");
+                                                cadastroOK = true;
+                                                break;
+                                        }
+                                }
+                                for (int i = 0; i < contOutros; i++) {// busca no vetor de gatos
+                                        if (outros[i].getNome().equals(nomeAgenda)) {
+                                                // mensagem de confirmação
+                                                JOptionPane.showMessageDialog(null, "Pet Encontrado");
+                                                cadastroOK = true;
+                                                break;
+                                        }
+                                }
+                                // 2º Terminar o Cadastro
+                                // 2º Terminar o Cadastro
+                                if (cadastroOK) {
+                                        boolean agendar = true;
+                                        while (agendar) {
+                                                String dataAgenda = JOptionPane
+                                                                .showInputDialog("Informe a Data do Agendamento");
+                                                String horaAgenda = JOptionPane
+                                                                .showInputDialog("Informe a Hora do Agendamento");
+                                                if (contAgenda == 0) {
+                                                        agendas[contAgenda] = new Agenda();
+                                                        agendas[contAgenda].setData(dataAgenda);
+                                                        agendas[contAgenda].setHora(horaAgenda);
+                                                        agendar = false;
 
-                                        for (int i = 0; i < outros.length; i++) {
-                                                if (nomeProp == gatos[i].getNome() || nomeProp == cachorros[i].getNome()
-                                                                || nomeProp == outros[i].getNome()) {
-                                                        JOptionPane.showMessageDialog(null,
-                                                                        "O animal já tem uma consulta marcada!");
                                                 } else {
-                                                        int contConsuta = 0;
-                                                        boolean escConsulta = true;
-
-                                                        String consData = JOptionPane.showInputDialog(
-                                                                        "Informe a data! \nPadrao DD-MM-AA");
-                                                        String condHora = JOptionPane.showInputDialog(
-                                                                        "Informe a hora! \nPadrao HH-MM");
-                                                        while (escConsulta) {
-                                                                if (consData + condHora == consulta[contConsuta].getDataHora()) {
-                                                                        JOptionPane.showMessageDialog(null,
-                                                                                        "Horario Ocupado - Por favor informe outro horario ou outra data!");
-                                                                } else {
-                                                                        consulta[contConsuta].setData(consData);
-                                                                        consulta[contConsuta].setHora(condHora);
-                                                                        consulta[contConsuta].setServico(
-                                                                                        JOptionPane.showInputDialog(
-                                                                                                        "Informe o serviço"));
-                                                                }
+                                                        for (int i = 0; i < contAgenda; i++) {
+                                                                if (agendas[i].getDataHora()
+                                                                                .equals(dataAgenda + horaAgenda)) {
+                                                                        // não pode agendar
+                                                                        break;
+                                                                }else{
+                                                                        agendas[contAgenda] = new Agenda();
+                                                                        agendas[contAgenda].setData(dataAgenda);
+                                                                        agendas[contAgenda].setHora(horaAgenda);
+                                                                        agendar = false;
+                                                                    }                                                              
 
                                                         }
+
                                                 }
-
                                         }
-
                                 }
 
                         }
+
                 }
         }
 }
