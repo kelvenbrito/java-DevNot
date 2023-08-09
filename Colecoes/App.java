@@ -12,6 +12,7 @@ public class App {
         // Excluir carro
         List<Carros> listaCarros = new ArrayList<>();
         boolean aberto = true;
+        String  Consulta="";
         while (aberto) {
             int acao = Integer.parseInt(JOptionPane.showInputDialog("1-Cadastro\\n" + //
                     " 2-Consulta\\n" + //
@@ -24,9 +25,10 @@ public class App {
                
             }else if(acao == 2){
                 for (Carros i : listaCarros) {
-                    Consulta
+                  Consulta += i.getMarca()+" "+i.getModelo()+"\n";
         
                 }
+                JOptionPane.showMessageDialog(null, Consulta);
             }
 
         }
