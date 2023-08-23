@@ -4,6 +4,7 @@
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
@@ -14,30 +15,25 @@ public class ExcContComp  extends JFrame {
     public ExcContComp() {
       
         super("JFlame");
+        this.setSize(400, 400);
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         JButton but = new JButton("criar botao");
-       
+         JLabel texto = new JLabel("Number of button clicks: ");
         JPanel painel = new JPanel();
         painel.add(but);
-        
-        this.getContentPane().add(painel);
+        painel.add(texto);
+        this.setContentPane(painel);
         this.pack();
+       
+       
               
         
        
         but.addActionListener(e -> {
      
             clickCount++;
-              JButton but2 = new JButton(String.valueOf(clickCount));
-             FlowLayout flow = new FlowLayout(); // Define o layout do container
-            this.setLayout(flow); // Seta layout do container
-           
-              JPanel painel2 = new JPanel();
-              painel.add(but2);
-        
-            this.getContentPane().add(painel2);
-            this.pack();
-           
+            texto.setText("Number of button clicks: " + clickCount);
+            this.add(new JButton(""+clickCount));
 
 
         });
