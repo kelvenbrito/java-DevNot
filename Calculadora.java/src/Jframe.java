@@ -1,14 +1,16 @@
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 public class Jframe extends JFrame {
     public Jframe() {
         super("Calculadoras");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.add(new Jtabbedpane());
         // set frame
-        this.setBounds(500, 250, 500, 500);
-        
-
-        this.setVisible(true);
-        this.pack();
+        pack();
+        setLocationRelativeTo(null); // Centraliza a janela
+        setVisible(true);
     }
+
+ 
 }

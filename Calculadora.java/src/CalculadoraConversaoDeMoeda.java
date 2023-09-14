@@ -1,11 +1,13 @@
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-
+import javax.swing.border.MatteBorder;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -15,8 +17,9 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 
-public class Calculadora2 extends JPanel {
-    // declaração do componentes
+//A classe é uma extensão do Jpanel
+public class CalculadoraConversaoDeMoeda extends JPanel {
+    // declaração dos componentes
     JTextField caixa1 = new JTextField(19);
     JLabel label1 = new JLabel();
     JLabel label2 = new JLabel();
@@ -26,7 +29,7 @@ public class Calculadora2 extends JPanel {
     JComboBox<String> comboBox1 = new JComboBox<>();
     JComboBox<String> comboBox2 = new JComboBox<>();
 
-    // atributos de instância para armazenar o item selecionado no comboBox1
+    // atributos de instância para armazenar os itens selecionado no comboBox1
     String itemSelecionado1 = "";
     String itemSelecionado2 = "";
 
@@ -35,15 +38,19 @@ public class Calculadora2 extends JPanel {
     String simb1 = "", simb2 = "";
     double moeda;
 
-    public Calculadora2() {
+    boolean converterPressionado = false;
+
+    public CalculadoraConversaoDeMoeda() {
         super();
         // Define o GridBagLayout como layout do container
         GridBagLayout gridb = new GridBagLayout();
         this.setLayout(gridb);
         GridBagConstraints constraints1 = new GridBagConstraints();
         constraints1.fill = GridBagConstraints.BOTH;
-        constraints1.insets = new Insets(5, 5, 5, 5); // Margens
+        constraints1.insets = new Insets(1, 5, 1, 5); // Margens
+   
         // Paineis principais
+        
         JPanel painel1 = new JPanel();
         JPanel painel2 = new JPanel();
         JPanel painel3 = new JPanel();
@@ -56,6 +63,27 @@ public class Calculadora2 extends JPanel {
         painel3.add(painel3a);
         painel3.add(painel3b);
 
+           // Adicione bordas apenas à esquerda e à parte superior
+        int top = 0; // Espessura da borda superior
+        int left = 2; // Espessura da borda à esquerda
+        int bottom = 0; // Sem borda na parte inferior
+        int right = 2; // Sem borda à direita
+
+        MatteBorder borda = BorderFactory.createMatteBorder(top, left, bottom, right, Color.BLACK);
+        painel2.setBorder(borda);
+
+        //Adiciona borda embaixo do painel3 
+        bottom=2;
+       borda = BorderFactory.createMatteBorder(top, left, bottom, right, Color.BLACK);
+          painel3.setBorder(borda);
+
+           //Adiciona borda embaixo e encima do painel1 
+          top=2;
+      borda = BorderFactory.createMatteBorder(top, left, bottom, right, Color.BLACK);
+          painel1.setBorder(borda);
+       
+
+
         // alinhar os paineis principais em colunas
         constraints1.gridx = 0;
         constraints1.gridy = 0;
@@ -67,8 +95,11 @@ public class Calculadora2 extends JPanel {
         constraints1.gridy = 2;
         this.add(painel3, constraints1);
 
+       
+
         painel1.add(new JLabel("Calculadora de conversão de moeda"));
 
+        //adiciona itens no comboBox1 e 2
         comboBox1.addItem("Escolha a moeda");
         comboBox1.addItem("Real");
         comboBox1.addItem("Dolar Americano");
@@ -78,7 +109,6 @@ public class Calculadora2 extends JPanel {
         comboBox1.addItem("Yuan chinês");
         comboBox1.addItem("Peso Argentino");
 
-        
         comboBox2.addItem("Escolha a moeda");
         comboBox2.addItem("Real");
         comboBox2.addItem("Dolar Americano");
@@ -153,7 +183,7 @@ public class Calculadora2 extends JPanel {
             constraints2.gridx = gridx;
             constraints2.gridy = gridy;
 
-            button.setPreferredSize(new Dimension(90, 60)); // Altere o tamanho dos botoes
+            button.setPreferredSize(new Dimension(93, 60)); // Altere o tamanho dos botoes
 
             painel3b.add(button, constraints2);
 
@@ -179,9 +209,9 @@ public class Calculadora2 extends JPanel {
         if (e1.getStateChange() == ItemEvent.SELECTED) {
             itemSelecionado1 = (String) e1.getItem();
             itemSelecionado2 = "";
-           
+
             comboBox2.setSelectedIndex(0);
-             label4.setText("");
+            label4.setText("");
 
             moeda = 1.00;
             // estrutura de condição que faz a comparaçao dos valores do ComboBox1
@@ -216,9 +246,8 @@ public class Calculadora2 extends JPanel {
     public void itemSelecionadoComboBox2(ItemEvent e2) {
         // Quando for selecionado um item no comboBox2
         if (e2.getStateChange() == ItemEvent.SELECTED) {
-            String itemSelecionado2 = (String) e2.getItem();
-            // estrutura de condição que faz a comparaçao dos valores do ComboBox1 e
-            // ComboBox2
+            itemSelecionado2 = (String) e2.getItem();
+            // estrutura de condição que faz a comparaçao dos valores do ComboBox1 e ComboBox2
             // modifica o label4
             if (itemSelecionado1.equals("Dolar Americano")) {
                 if (itemSelecionado2.equals("Real")) {
@@ -446,25 +475,37 @@ public class Calculadora2 extends JPanel {
         } else if (buttonText.equals("Converter")) {
             try {
                 String textoCaixa = caixa1.getText().replaceAll("[^\\d.]", "");// recebe o valor do JTextField
-                double cValor = Double.parseDouble(textoCaixa); // transforma a variavel string em double
-                // faz a operação de multiplicação do valor do JTextField com o valor da
-                // variavel Moeda
-                double resultado = cValor * moeda;
-                caixa1.setText(simb2 + String.format("%.2f", resultado));
-                if(buttonText==button.getText()&& !buttonText.equals("Converter")){
-                 caixa1.setText("");}
+                if (textoCaixa != null && !textoCaixa.isEmpty()) {
+                    double cValor = Double.parseDouble(textoCaixa); // transforma a variavel string em double
+                    // faz a operação de multiplicação do valor do JTextField com o valor da
+                    // variavel Moeda
+                    double resultado = cValor * moeda;
+                    caixa1.setText(simb2 + String.format("%.2f", resultado));
+                   
+                } else {
+                    caixa1.setText("Preencha um valor válido");
+                    converterPressionado = false; // Certifique-se de redefinir a variável em caso de erro
+                }
             } catch (NumberFormatException ex) {
                 // Lidar com erro de entrada inválida, se necessário
                 caixa1.setText("Erro!");
+                converterPressionado = false; // Certifique-se de redefinir a variável em caso de erro
             }
+             converterPressionado = true; // Marque o botão "Converter" como pressionado
 
         } else {
-            // adiciona o texto do botão ao JTextField
-            
+            // Verifique se o botão "Converter" foi pressionfado antes de adicionar texto ao
+            // JTextField
+            if (converterPressionado) {
 
+                caixa1.setText("");
+                caixa1.setText(simb1);
+                converterPressionado = false;
+            }
+            // adiciona o texto do botão ao JTextField
             caixa1.setText(caixa1.getText() + buttonText);
+
         }
 
     }
-
 }
