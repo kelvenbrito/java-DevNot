@@ -48,6 +48,8 @@ public class CalculadoraConversaoDeMoeda extends JPanel {
         GridBagConstraints constraints1 = new GridBagConstraints();
         constraints1.fill = GridBagConstraints.BOTH;
         constraints1.insets = new Insets(1, 5, 1, 5); // Margens
+        constraints1.weightx = 1.0; // Componente expande horizontalmente
+        constraints1.weighty = 1.0; // Componente expande verticalmente
    
         // Paineis principais
         

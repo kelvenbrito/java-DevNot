@@ -1,5 +1,3 @@
-import java.awt.Color;
-
 public class Task{
     //atributos
     String description;
@@ -21,9 +19,6 @@ public class Task{
     }
     public void setDone(boolean done) {
         this.done = done;
-    }
-    public String setBackground(Color green) {
-        return null;
     }
     
     
