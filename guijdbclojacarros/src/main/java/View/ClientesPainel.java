@@ -11,7 +11,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import Connection.CarrosDAO;
 import Connection.ClientesDAO;
 import Controller.ClientesControl;
 
@@ -89,7 +88,7 @@ public class ClientesPainel extends JPanel{
         cadastrar.addActionListener(e->{
             try {
                 operacoes.cadastrar(cliNomeField.getText(), cliEnderecoField.getText(),
-                                    cliTelefoneField.getText(), cliCpfField.getText());
+                                cliTelefoneField.getText(), cliCpfField.getText());
             } catch (Exception e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
@@ -112,7 +111,7 @@ public class ClientesPainel extends JPanel{
 
         //tratamento do botão apagar
         apagar.addActionListener(e->{
-            operacoes.apagar(cliTelefoneField.getText());
+            operacoes.apagar(cliCpfField.getText());
             cliNomeField.setText("");
             cliEnderecoField.setText("");
             cliTelefoneField.setText("");
@@ -129,10 +128,10 @@ public class ClientesPainel extends JPanel{
         clientes = new ClientesDAO().listarTodos();
         // Obtém os cliente atualizados do banco de dados
         for (Clientes cliente : clientes) {
-            // Adiciona os dados de cada carro como uma nova linha na tabela Swing
-            tableModel.addRow(new Object[] { cliente.getMarca(), cliente.getModelo(),
+            // Adiciona os dados de cada cliente como uma nova linha na tabela Swing
+            tableModel.addRow(new Object[] { cliente.getNome(), cliente.getEndereco(),
 
-                    cliente.getAno(), cliente.getPlaca()});
+                    cliente.getEndereco(), cliente.getCpf()});
         }
     }
 }

@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -60,9 +61,7 @@ public class VendasPainel extends JPanel {
         JPanel infoClientesPanel = new JPanel();
         JButton vender = new JButton("Vender");
         JButton histVenda = new JButton("Historico de Venda");
-        JPanel historicoVendasPanel = new JPanel();
-        JTable historicoVendasTable = new JTable();
-        DefaultTableModel historicoVendasTableModel = new DefaultTableModel();
+
         add(carrosPanel);
         add(clientesPanel);
         add(vender);
@@ -136,9 +135,9 @@ public class VendasPainel extends JPanel {
 
         });
 
-        LocalDate hoje = LocalDate.now();
+        LocalDate date = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // Formato personalizado
-        String hojeFormatado = hoje.format(formatter);
+        String data = date.format(formatter);
 
         VendasControl operacoesVendas = new VendasControl(vendas, tableModel, table);
         CarrosControl operacoesCarros = new CarrosControl(carros, tableModel, table);
@@ -146,15 +145,20 @@ public class VendasPainel extends JPanel {
         // tratamento para botão cadastrar
         vender.addActionListener(e -> {
             try {
-                operacoesVendas.cadastrar(nome.getText(), cpf.getText(), placa.getText(), hojeFormatado,
-                        valor.getText());
-                // Verificar se a placa está presente em algum carro da lista
-                for (Carros carro : carros) {
-                    if (carro.getPlaca().equals(numeroPlaca)) {
-                        operacoesCarros.apagar(carro.getPlaca());
-                        atualizarTabela();
+                int option = JOptionPane.showConfirmDialog(null,
+                        "Deseja realmente realizar essa venda \nessa venda sera registrada no banco de dados?", "Confirmação",
+                        JOptionPane.YES_NO_OPTION);
+                if (option == JOptionPane.YES_OPTION) {
+                    operacoesVendas.cadastrar(nome.getText(), cpf.getText(), placa.getText(), data,
+                            valor.getText());
+                    // Verificar se a placa está presente em algum carro da lista
+                    for (Carros carro : carros) {
+                        if (carro.getPlaca().equals(numeroPlaca)) {
+                            operacoesCarros.venderCarro(carro.getPlaca());
+                            atualizarTabela();
 
-                        break; // Se a placa for encontrada, encerramos o loop
+                            break; // Se a placa for encontrada, encerramos o loop
+                        }
                     }
                 }
 
@@ -166,7 +170,7 @@ public class VendasPainel extends JPanel {
         });
         JScrollPane jSPane = new JScrollPane();
         tableModel = new DefaultTableModel(new Object[][] {},
-                new String[] { "Cod.Venda", "CPF-Cliente", "Nome-Cliente","Placa-Carro", "Data", "Valor" });
+                new String[] { "Cod.Venda", "CPF-Cliente", "Nome-Cliente", "Placa-Carro", "Data", "Valor" });
         table = new JTable(tableModel);
         jSPane.setViewportView(table);
 

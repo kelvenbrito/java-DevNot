@@ -38,12 +38,12 @@ public class CarrosControl {
 
     // Método para cadastrar um novo carro no banco de dados
     public void cadastrar(String marca, String modelo, String ano, String placa, String valor) {
-      
+        placa = placa.toUpperCase();
 
         try {
-            if (marca.isEmpty()||modelo.isEmpty()||ano.isEmpty()||placa.isEmpty()||valor.isEmpty()) {
+            if (marca.isEmpty() || modelo.isEmpty() || ano.isEmpty() || placa.isEmpty() || valor.isEmpty()) {
                 throw new NumberFormatException("Erro! Verifique se há algum campo vazio");
-           }
+            }
             // Verifica se o valor pode ser convertido para um número
             if (!valor.matches("[0-9]*")) {
                 throw new NumberFormatException("No campo valor deve haver somente números");
@@ -54,13 +54,16 @@ public class CarrosControl {
             }
 
             if (placa.length() != 7) {
-                 throw new NumberFormatException("Erro o valor digitado não corresponde ao codigo padrao de uma placa no brasil!\n No campo Placa deve haver quatro letras e três numeros");
+                throw new NumberFormatException(
+                        "Erro o valor digitado não corresponde ao codigo padrao de uma placa no brasil!\n No campo Placa deve haver três letras e quatro numeros");
             }
             if (!placa.substring(0, 3).matches("[A-Z]*")) {
-                throw new NumberFormatException("Erro o valor digitado não corresponde ao codigo padrao de uma placa no brasil!\n  Você deve digitar letras nos tres digitos iniciais!");
+                throw new NumberFormatException(
+                        "Erro o valor digitado não corresponde ao codigo padrao de uma placa no brasil!\n  Você deve digitar letras nos tres digitos iniciais!");
             }
             if (!placa.substring(4).matches("[0-9]*")) {
-               throw new NumberFormatException("Erro o valor digitado não corresponde ao codigo padrao de uma placa no brasil!\n  Você deve digitar numeros nos quatros digitos finais!");
+                throw new NumberFormatException(
+                        "Erro o valor digitado não corresponde ao codigo padrao de uma placa no brasil!\n  Você deve digitar numeros nos quatros digitos finais!");
             }
 
             // Conversão para número apenas se a validação for bem-sucedida
@@ -69,6 +72,7 @@ public class CarrosControl {
             // Se a conversão for bem-sucedida, cadastra no banco de dados
             new CarrosDAO().cadastrar(marca, modelo, ano, placa, valor);
             atualizarTabela(); // Atualiza a tabela de exibição após o cadastro
+            JOptionPane.showMessageDialog(null, "Carro cadastrato com sucesso!");
 
         } catch (NumberFormatException e) {
             // Tratamento da exceção ou exibição de mensagem de erro
@@ -79,14 +83,71 @@ public class CarrosControl {
 
     // Método para atualizar os dados de um carro no banco de dados
     public void atualizar(String marca, String modelo, String ano, String placa, String valor) {
-        new CarrosDAO().atualizar(marca, modelo, ano, placa, valor);
-        // Chama o método de atualização no banco de dados
-        atualizarTabela(); // Atualiza a tabela de exibição após a atualização
+
+        try {
+            if (marca.isEmpty() || modelo.isEmpty() || ano.isEmpty() || placa.isEmpty() || valor.isEmpty()) {
+                throw new NumberFormatException("Erro! Verifique se há algum campo vazio");
+            }
+            // Verifica se o valor pode ser convertido para um número
+            if (!valor.matches("[0-9]*")) {
+                throw new NumberFormatException("No campo valor deve haver somente números");
+            }
+
+            if (!ano.matches("[0-9]*")) {
+                throw new NumberFormatException("No campo ano deve haver somente números");
+            }
+
+            if (placa.length() != 7) {
+                throw new NumberFormatException(
+                        "Erro o valor digitado não corresponde ao codigo padrao de uma placa no brasil!\n No campo Placa deve haver três letras e quatro numeros");
+            }
+            if (!placa.substring(0, 3).matches("[A-Z]*")) {
+                throw new NumberFormatException(
+                        "Erro o valor digitado não corresponde ao codigo padrao de uma placa no brasil!\n  Você deve digitar letras nos tres digitos iniciais!");
+            }
+            if (!placa.substring(4).matches("[0-9]*")) {
+                throw new NumberFormatException(
+                        "Erro o valor digitado não corresponde ao codigo padrao de uma placa no brasil!\n  Você deve digitar numeros nos quatros digitos finais!");
+            }
+
+            // Conversão para número apenas se a validação for bem-sucedida
+            double valorNumero = Double.parseDouble(valor);
+            double anoNumero = Double.parseDouble(ano);
+            // Se a conversão for bem-sucedida, edita a informação no banco de dados
+            int option = JOptionPane.showConfirmDialog(null,
+                    "Deseja realmente alterar os dados desse carro do banco de dados?", "Confirmação",
+                    JOptionPane.YES_NO_OPTION);
+            if (option == JOptionPane.YES_OPTION) {
+                new CarrosDAO().atualizar(marca, modelo, ano, placa, valor);
+                JOptionPane.showMessageDialog(null, "dados alterado com sucesso!");
+            }
+            // Chama o método de atualização no banco de dados
+            atualizarTabela(); // Atualiza a tabela de exibição após a atualização
+        } catch (NumberFormatException e) {
+            // Tratamento da exceção ou exibição de mensagem de erro
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
     }
 
     // Método para apagar um carro do banco de dados
     public void apagar(String placa) {
+        int option = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir esse carro do banco de dados?",
+                "Confirmação", JOptionPane.YES_NO_OPTION);
+        if (option == JOptionPane.YES_OPTION) {
+            new CarrosDAO().apagar(placa);
+            JOptionPane.showMessageDialog(null, "Carro Excluido com sucesso!");
+        }
+        // Chama o método de exclusão no banco de dados
+        atualizarTabela(); // Atualiza a tabela de exibição após a exclusão
+    }
+
+    // Método para apagar um carro do banco de dados quando ele for vendido
+    public void venderCarro(String placa) {
+
         new CarrosDAO().apagar(placa);
+        JOptionPane.showMessageDialog(null, "Carro Excluido do banco de carros!");
+
         // Chama o método de exclusão no banco de dados
         atualizarTabela(); // Atualiza a tabela de exibição após a exclusão
     }

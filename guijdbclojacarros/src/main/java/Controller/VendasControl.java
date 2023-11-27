@@ -28,7 +28,7 @@ public class VendasControl {
     private void atualizarTabela() {
         tableModel.setRowCount(0); // Limpa todas as linhas existentes na tabela
         vendas = new VendasDAO().listarTodos();
-        // Obtém os carros atualizados do banco de dados
+        // Obtém as vendas atualizados do banco de dados
         for (Vendas venda : vendas) {
             // Adiciona os dados de cada carro como uma nova linha na tabela Swing
             tableModel.addRow(new Object[] { venda.getCodVenda(), venda.getCPFCliente(), venda.getnomeClientes(),
