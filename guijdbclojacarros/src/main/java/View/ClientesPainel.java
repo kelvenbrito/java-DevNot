@@ -19,7 +19,7 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import Model.Carros;
+
 import Model.Clientes;
 
 public class ClientesPainel extends JPanel{

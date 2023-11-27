@@ -58,4 +58,8 @@ public class Carros {
         this.valor = valor;
     }
 
+    public boolean contains(String text) {
+        return false;
+    }
+
 }
