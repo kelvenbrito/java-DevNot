@@ -1,0 +1,65 @@
+Manual de Uso da Aplicação
+Vendas:
+    CPF do Cliente VIP:
+    Insira o CPF do cliente  se desejado, caso o cliente não estiver cadastrado 
+    aperte o botao cadastrar para abrira pagina de cadastro de ciente para entao cadastralo ,
+    ao inserir o CPF todos os produtos 
+    inseridos na venda terao um desconto de 25%
+
+    Inserir Produto:
+        Preencha o campo "Código do Produto" e "Quantidade".
+        Clique no botão "Inserir" para adicionar o produto à tabela de vendas.
+        A quantidade inserida deve estar disponível no estoque. Caso contrário, será exibida uma mensagem de erro.
+
+    Editar Produto na Venda:
+        Selecione um produto na tabela de vendas.
+        Altere os campos desejados: "Código do Produto" e "Quantidade".
+        Clique no botão "Editar" para aplicar as alterações.
+        As alterações impactam o valor final da compra.
+
+    Apagar Produto da Venda:
+        Selecione um produto na tabela de vendas.
+        Clique no botão "Apagar" para remover o produto da venda.
+        A remoção afeta o valor total da compra.
+
+    Finalizar Venda:
+        
+        Clique no botão "Finalizar" para concluir a venda.
+        Verifica se os produtos estão disponíveis e finaliza a compra.
+
+
+Cadastro de Produtos:
+
+    Cadastrar Produto:
+        Preencha os campos: "Código de Barras", "Nome", "Preço" e "Quantidade".
+        Clique no botão "Cadastrar" para adicionar um novo produto.
+        Os produtos são adicionados à tabela de produtos cadastrados.
+
+    Editar Produto:
+        Selecione um produto na tabela de produtos cadastrados.
+        Modifique os campos desejados: "Código de Barras", "Nome", "Preço" e "Quantidade".
+        Clique no botão "Editar" para atualizar os dados do produto.
+
+    Apagar Produto:
+        Selecione um produto na tabela de produtos cadastrados.
+        Clique no botão "Apagar" para remover o produto do registro.
+
+Cadastro de Clientes:
+
+    Cadastrar Cliente:
+        Insira o "Nome" e o "CPF" do cliente.
+        Clique no botão "Cadastrar" para adicionar um novo cliente ao registro.
+
+    Excluir Cliente:
+        Insira o "CPF" do cliente que deseja remover.
+        Clique no botão "Excluir" para remover o cliente do registro.
+
+Observações Gerais:
+
+    Tabelas:
+        Clique nas linhas das tabelas para selecionar itens específicos.
+        Algumas colunas não são editáveis para evitar modificações incorretas.
+
+    Atualizações:
+        A tabela de produtos é atualizada automaticamente ao cadastrar, editar ou apagar produtos.
+        A tabela de vendas é atualizada após cada ação (inserir, editar, apagar) na venda.
