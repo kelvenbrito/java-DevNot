@@ -86,23 +86,23 @@ public class ListaDAO {
         }
     }
     // Atualizar dados no banco
-    public void atualizar(String codProduto, String nome, double preco, int quantidade) {
+    public void atualizar(String idTarefa, String descricao, String condicao) {
         PreparedStatement stmt = null;
         // Define a instrução SQL parametrizada para atualizar dados pelo código do
         // produto
         String sql = "UPDATE tarefas_ToDoList SET descricao = ?, condicao = ? WHERE idTarefa = ?";
         try {
             stmt = connection.prepareStatement(sql);
-            stmt.setString(1, nome); // Corrigido: nome vem primeiro
-            stmt.setDouble(2, preco); // Corrigido: preco em segundo
-            stmt.setInt(3, quantidade); // Corrigido: quantidade em terceiro
-            stmt.setString(4, codProduto); // Por último, o código do produto
+            stmt.setString(1, descricao); // Corrigido: nome vem primeiro
+            stmt.setString(2, condicao); // Corrigido: preco em segundo
+            stmt.setString(3, idTarefa); // Corrigido: quantidade em terceiro
+
 
             int rowsEdit = stmt.executeUpdate(); // Executa a instrução SQL e obtém o número de linhas afetadas
             if (rowsEdit > 0) {
-                System.out.println("Produto atualizado com sucesso");
+                System.out.println("Tarefa atualizado com sucesso");
             } else {
-                System.out.println("Nenhum produto foi atualizado. Verifique o código do produto.");
+                System.out.println("Nenhum tarefa foi atualizado. Verifique o código do produto.");
             }
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao atualizar dados no banco de dados.", e);
