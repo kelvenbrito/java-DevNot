@@ -90,7 +90,7 @@ public class ListaDAO {
         PreparedStatement stmt = null;
         // Define a instrução SQL parametrizada para atualizar dados pelo código do
         // produto
-        String sql = "UPDATE tarefas_ToDoList SET nome = ?, preco = ?, quantidade = ? WHERE codProduto = ?";
+        String sql = "UPDATE tarefas_ToDoList SET descricao = ?, condicao = ? WHERE idTarefa = ?";
         try {
             stmt = connection.prepareStatement(sql);
             stmt.setString(1, nome); // Corrigido: nome vem primeiro
