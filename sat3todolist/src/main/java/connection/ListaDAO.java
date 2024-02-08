@@ -22,7 +22,7 @@ public class ListaDAO {
 
     // criar Tabela
     public void criaTabela() {
-        String sql = "CREATE TABLE IF NOT EXISTS tarefas_ToDoList(idTarefa SERIAL PRIMARY KEY, descricao VARCHAR(255), condicao VARCHAR(30))";
+        String sql = "CREATE TABLE IF NOT EXISTS tarefas_ToDoList(idTarefa SERIAL PRIMARY KEY, descricao VARCHAR(255))";
         try (Statement stmt = this.connection.createStatement()) {
             stmt.execute(sql);
             System.out.println("Tabela de tarefas criada com sucesso.");
@@ -51,8 +51,7 @@ public class ListaDAO {
                 // registro
                 
                 Tarefas tarefa = new Tarefas(
-                        rs.getString("descricao"),
-                        rs.getString("condicao"));
+                        rs.getString("descricao"));
                        
                         tarefas.add(tarefa); // Adiciona o objeto Tarefas à lista de tarefas
                     }
@@ -71,7 +70,7 @@ public class ListaDAO {
     public void cadastrar(String descricao) {
         PreparedStatement stmt = null;
         // Define a instrução SQL parametrizada para cadastrar na tabela
-        String sql = "INSERT INTO tarefas_ToDoList (descricao) VALUES (?";
+        String sql = "INSERT INTO tarefas_ToDoList (descricao) VALUES (?)";
         try {
             stmt = connection.prepareStatement(sql);
             stmt.setString(1, descricao);
@@ -92,7 +91,6 @@ public class ListaDAO {
         try {
             stmt = connection.prepareStatement(sql);
             stmt.setString(1, descricao); // Corrigido: nome vem primeiro
-            stmt.setString(2, condicao); // Corrigido: preco em segundo
             stmt.setString(3, idTarefa); // Corrigido: quantidade em terceiro
 
 
