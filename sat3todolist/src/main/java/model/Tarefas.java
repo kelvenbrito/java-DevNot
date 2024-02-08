@@ -13,12 +13,6 @@ public class Tarefas {
        
     }
 
- 
-
-    public Tarefas(String string, String string2) {
-        //TODO Auto-generated constructor stub
-    }
-
 
 
     // getters and setters
