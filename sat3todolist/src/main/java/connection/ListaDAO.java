@@ -22,7 +22,7 @@ public class ListaDAO {
 
     // criar Tabela
     public void criaTabela() {
-        String sql = "CREATE TABLE IF NOT EXISTS tarefas_ToDoListidSerial (idTarefa SERIAL PRIMARY KEY, descricao VARCHAR(255), condicao VARCHAR(30))";
+        String sql = "CREATE TABLE IF NOT EXISTS tarefas_ToDoList(idTarefa SERIAL PRIMARY KEY, descricao VARCHAR(255), condicao VARCHAR(30))";
         try (Statement stmt = this.connection.createStatement()) {
             stmt.execute(sql);
             System.out.println("Tabela de tarefas criada com sucesso.");
@@ -42,7 +42,7 @@ public class ListaDAO {
         tarefas = new ArrayList<>();
         // Cria uma lista para armazenar as tarefas recuperados do banco de dados
         try {
-            stmt = connection.prepareStatement("SELECT * FROM tarefas_ToDoListidSerial");
+            stmt = connection.prepareStatement("SELECT * FROM tarefas_ToDoList");
             // Prepara a consulta SQL para selecionar todos os registros da tabela
             rs = stmt.executeQuery();
             // Executa a consulta e armazena os resultados no ResultSet
@@ -51,7 +51,6 @@ public class ListaDAO {
                 // registro
                 
                 Tarefas tarefa = new Tarefas(
-                        rs.getString("idTarefa"),
                         rs.getString("descricao"),
                         rs.getString("condicao"));
                        
@@ -69,14 +68,13 @@ public class ListaDAO {
     }
 
     // Cadastrar Carro no banco
-    public void cadastrar(String descricao, String condicao) {
+    public void cadastrar(String descricao) {
         PreparedStatement stmt = null;
         // Define a instrução SQL parametrizada para cadastrar na tabela
-        String sql = "INSERT INTO tarefas_ToDoList (descricao, condicao)VALUES (?, ?)";
+        String sql = "INSERT INTO tarefas_ToDoList (descricao) VALUES (?";
         try {
             stmt = connection.prepareStatement(sql);
             stmt.setString(1, descricao);
-            stmt.setString(2, condicao);
             stmt.executeUpdate();
             System.out.println("Dados inseridos com sucesso");
         } catch (SQLException e) {
