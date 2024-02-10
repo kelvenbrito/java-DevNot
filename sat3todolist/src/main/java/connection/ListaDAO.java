@@ -51,6 +51,7 @@ public class ListaDAO {
                 // registro
                 
                 Tarefas tarefa = new Tarefas(
+                        rs.getInt("idTarefa"),
                         rs.getString("descricao"));
                        
                         tarefas.add(tarefa); // Adiciona o objeto Tarefas à lista de tarefas
@@ -107,13 +108,13 @@ public class ListaDAO {
         }
     }
      // Apagar dados do banco
-     public void apagar(String idTarefa) {
+     public void apagar(int idTarefa) {
         PreparedStatement stmt = null;
         // Define a instrução SQL parametrizada para apagar dados pela placa
-        String sql = "DELETE FROM tarefas_ToDoListidSerial  WHERE idTarefa = ?";
+        String sql = "DELETE FROM tarefas_ToDoList  WHERE idTarefa = ?";
         try {
             stmt = connection.prepareStatement(sql);
-            stmt.setString(1, idTarefa);
+            stmt.setInt(1, idTarefa);
             stmt.executeUpdate(); // Executa a instrução SQL
             System.out.println("Dado apagado com sucesso");
         } catch (SQLException e) {

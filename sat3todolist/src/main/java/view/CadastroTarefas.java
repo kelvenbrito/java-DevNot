@@ -3,16 +3,14 @@ package view;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.table.DefaultTableModel;
-
 import connection.ListaDAO;
 import controller.TarefasControl;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
+
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
@@ -20,11 +18,10 @@ import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
-import java.util.List;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
 import java.awt.event.MouseEvent;
 
 import model.Tarefas;
@@ -33,8 +30,8 @@ public class CadastroTarefas extends JFrame {
     private JPanel mainPanel;
     private JTextField taskInputField;
     private JButton addButton;
-    private JList<String> taskList;
-    private DefaultListModel<String> listModel;
+    private JTable table;
+    private DefaultTableModel tableModel;
     private JButton deleteButton;
     private JButton markDoneButton;
     private JComboBox<String> filterComboBox;
@@ -61,8 +58,8 @@ public class CadastroTarefas extends JFrame {
         tarefas = new ArrayList<>();
         tarefasOriginais = new ArrayList<>(tarefas);
 
-        listModel = new DefaultListModel<>();
-        taskList = new JList<>(listModel);
+        tableModel = new DefaultTableModel();
+        table = new JTable(tableModel);
 
         // Inicialização dos campos de entrada, botões e ComboBox
         taskInputField = new JTextField();
@@ -90,7 +87,7 @@ public class CadastroTarefas extends JFrame {
 
         // Adiciona os componentes ao painel principal
         mainPanel.add(inputPanel, BorderLayout.NORTH);
-        mainPanel.add(new JScrollPane(taskList), BorderLayout.CENTER);
+        mainPanel.add(new JScrollPane(table), BorderLayout.CENTER);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         // Adiciona o painel principal à janela
@@ -98,18 +95,24 @@ public class CadastroTarefas extends JFrame {
 
         // criar o banco de dados
         new ListaDAO().criaTabela();
-  
+
+        // executar o método de atualizar tabela
+        atualizarTabela();
 
         // Adiciona listeners aos botões
         addButton.addActionListener(e -> {
 
             addTask();
+            // executar o método de atualizar tabela
+            atualizarTabela();
 
         });
 
         deleteButton.addActionListener(e -> {
             // Quando o botão "Excluir" é pressionado
             deleteTask();
+            // executar o método de atualizar tabela
+            atualizarTabela();
 
         });
 
@@ -176,7 +179,7 @@ public class CadastroTarefas extends JFrame {
         });
 
         // Adiciona um MouseListener para detectar cliques duplos na lista de tarefas
-        taskList.addMouseListener(new MouseAdapter() {
+        table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
@@ -218,32 +221,32 @@ public class CadastroTarefas extends JFrame {
 
     // Função para adicionar uma nova tarefa à lista
     private void addTask() {
-        TarefasControl operacoes = new TarefasControl (tarefas,  listModel, taskList);
+        TarefasControl operacoes = new TarefasControl(tarefas, tableModel, table);
         // Obtém a descrição da tarefa do campo de entrada
         String taskDescription = taskInputField.getText().trim();
         if (!taskDescription.isEmpty()) {
-            // Cria uma nova tarefa, adiciona à lista e atualiza a interface
-            Tarefas newTask = new Tarefas(taskDescription);
-            
-      operacoes.cadastrar(taskDescription);
-            tarefas.add(newTask);
-            updateTaskList();
+
+            operacoes.cadastrar(taskDescription);
+
             // Limpa o campo de entrada
             taskInputField.setText("");
         }
     }
 
+    
+
     // Função para excluir a tarefa selecionada da lista
     private void deleteTask() {
-        int selectedIndex = taskList.getSelectedIndex();
+        TarefasControl operacoes = new TarefasControl(tarefas, tableModel, table);
+        int selectedIndex = table.getSelectedColumn();
         if (selectedIndex >= 0 && selectedIndex < tarefas.size()) {
             // Exibe uma caixa de diálogo de confirmação
             int option = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir?", "Confirmação",
                     JOptionPane.YES_NO_OPTION);
             if (option == JOptionPane.YES_OPTION) {
                 // Remove a tarefa da lista e atualiza a interface
-                tarefas.remove(selectedIndex);
-                updateTaskList();
+                operacoes.apagar(selectedIndex);
+
             }
         }
     }
@@ -251,12 +254,12 @@ public class CadastroTarefas extends JFrame {
     // Função para marcar a tarefa selecionada como concluída
     // Função para marcar a tarefa selecionada como concluída
     private void markTaskDone() {
-        int selectedIndex = taskList.getSelectedIndex();
+        int selectedIndex = table.getSelectedColumn();
         if (selectedIndex >= 0 && selectedIndex < tarefas.size()) {
             // Marca a tarefa como concluída e atualiza a interface
             Tarefas tarefa = tarefas.get(selectedIndex);
             tarefa.setcondicao(true);
-            updateTaskList();
+
         }
     }
 
@@ -264,13 +267,13 @@ public class CadastroTarefas extends JFrame {
     private void filterTasks() {
         // Obtém a seleção do ComboBox
         String filter = (String) filterComboBox.getSelectedItem();
-        // Limpa o modelo da lista
-        listModel.clear();
-        // Adiciona as tarefas filtradas ao modelo
+        tableModel.setRowCount(0); // Limpa todas as linhas existentes na tabela
+       
         for (Tarefas tarefa : tarefasOriginais) {
             if (filter.equals("Todas") || (filter.equals("Ativas") && !tarefa.iscondicao())
                     || (filter.equals("Concluídas") && tarefa.iscondicao())) {
-                listModel.addElement(tarefa.getDescricao());
+                        tableModel.addRow(
+                            new Object[] {tarefa.getDescricao() });
             }
         }
     }
@@ -288,17 +291,7 @@ public class CadastroTarefas extends JFrame {
 
         // Remove as tarefas concluídas da lista e atualiza a interface
         tarefas.removeAll(completedTasks);
-        updateTaskList();
-    }
 
-    // Função para atualizar a lista de tarefas na interface gráfica
-    private void updateTaskList() {
-        // Limpa o modelo da lista
-        listModel.clear();
-        // Adiciona as tarefas atualizadas ao modelo
-        for (Tarefas tarefa : tarefas) {
-            listModel.addElement(tarefa.getDescricao() + (tarefa.iscondicao() ? " (Concluída)" : ""));
-        }
     }
 
     private void fecharJanela() {
@@ -312,7 +305,7 @@ public class CadastroTarefas extends JFrame {
 
     // Função para editar a tarefa selecionada
     private void editTask() {
-        int selectedIndex = taskList.getSelectedIndex();
+        int selectedIndex = table.getSelectedColumn();
         if (selectedIndex >= 0 && selectedIndex < tarefas.size()) {
             // Obtém a descrição atual da tarefa
             String currentDescription = tarefas.get(selectedIndex).getDescricao();
@@ -324,12 +317,25 @@ public class CadastroTarefas extends JFrame {
             // Atualiza a descrição se o usuário não cancelou
             if (editedDescription != null && !editedDescription.isEmpty()) {
                 tarefas.get(selectedIndex).setDescricao(editedDescription);
-                updateTaskList();
+
             }
         }
     }
 
-    
+    // métodos (atualizar tabela)
+    // Método para atualizar a tabela de exibição com dados do banco de dados
+    void atualizarTabela() {
+        tableModel.setRowCount(0); // Limpa todas as linhas existentes na tabela
+        tarefas = new ListaDAO().listarTodos();
+        // Obtém os produtos atualizados do banco de dados
+        for (Tarefas tarefa : tarefas) {
+            // Adiciona os dados de cada produto como uma nova linha na tabela Swing
+            tableModel.addRow(
+                new Object[] {tarefa.getIdTarefa(), tarefa.getDescricao()});
+
+        }
+
+    }
 
     // Função para exibir a janela principal
     public void run() {

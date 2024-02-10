@@ -2,27 +2,37 @@ package model;
 
 public class Tarefas {
     // atributos
-  
+    int idTarefa;
     String descricao;
     boolean condicao;
 
     // contrutor
-    public Tarefas(String descricao) {
+    public Tarefas(int idTarefa, String descricao) {
+        this.idTarefa = idTarefa;
         this.descricao = descricao;
-        this.condicao = false;
+      
        
     }
 
 
 
     // getters and setters
-    public String getDescricao() {
-        return descricao;
+    
+    public int getIdTarefa() {
+        return idTarefa;
     }
 
 
 
+    public void setIdTarefa(int idTarefa) {
+        this.idTarefa = idTarefa;
+    }
 
+
+
+    public String getDescricao() {
+        return descricao;
+    }
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }

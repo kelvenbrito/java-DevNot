@@ -2,8 +2,7 @@ package controller;
 
 import java.util.List;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
+
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -14,23 +13,23 @@ import model.Tarefas;
 public class TarefasControl {
     // Atributos
     private List<Tarefas> tarefas; // Lista de tarefas
-    private DefaultListModel listModel; // Modelo da lista
-    private JList taskList; // lista
+    private DefaultTableModel tableModel; // Modelo da tabela
+    private JTable table; // Tabela
 
-    public TarefasControl(List<Tarefas> tarefas, DefaultListModel<String> listModel, JList<String> taskList) {
-        this.tarefas = tarefas; // Inicialização da lista de tarefas
-        this.listModel = listModel; // Inicialização do modelo da tabela
-        this.taskList = taskList; // Inicialização da tabela
+    public TarefasControl(List<Tarefas> tarefas, DefaultTableModel tableModel, JTable table) {
+        this.tarefas = tarefas; // Inicialização da tablea de tarefas
+        this.tableModel = tableModel; // Inicialização do modelo da tabela
+        this.table = table; // Inicialização da tabela
     }
 
     // Método para atualizar a tabela de exibição com dados do banco de dados
     private void atualizarTabela() {
-        listModel.clear(); // Limpa todas as linhas existentes na tabela
+        tableModel.setRowCount(0); // Limpa todas as linhas existentes na tabela
         tarefas = new ListaDAO().listarTodos(); // Obtém as tarefas atualizados do banco de dados
 
         // Adiciona as tarefas como novas linhas na tabela Swing
         for (Tarefas tarefa : tarefas) {
-            listModel.addElement(new Object[] { tarefa.getDescricao(), tarefa.iscondicao() });
+            tableModel.addRow(new Object[] { tarefa.getIdTarefa(),tarefa.getDescricao() });
         }
     }
 
@@ -72,7 +71,7 @@ public class TarefasControl {
     }
 
         // Método para apagar um produto do banco de dados
-        public void apagar(String idTarefa) {
+        public void apagar(int idTarefa) {
             int option = JOptionPane.showConfirmDialog(null,
                     "Deseja realmente apagar esse produto no banco de dados?",
                     "Confirmação", JOptionPane.YES_NO_OPTION);
